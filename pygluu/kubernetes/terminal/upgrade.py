@@ -35,5 +35,5 @@ class PromptUpgrade:
         self.settings.update(image_names_and_tags)
 
         # reset this config to force image prompt
-        self.settings.set("installer-settings.image.edit", '')
+        self.settings.set("installer-settings.image.edit", "")
         PromptImages(self.settings).prompt_image_name_tag()

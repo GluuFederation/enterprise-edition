@@ -1,9 +1,9 @@
 import pytest
-
+import click
 
 @pytest.mark.parametrize("given, expected", [
-    (True, "Y"),
-    (False, "N"),
+    (True, True),
+    (False, False),
 ])
 def test_helpers_confirm_yesno(monkeypatch, given, expected):
 

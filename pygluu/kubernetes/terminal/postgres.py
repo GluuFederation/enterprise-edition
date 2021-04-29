@@ -39,6 +39,6 @@ class PromptPostgres:
                 "Please enter  postgres (remote or local) "
                 "URL base name.The recommended approach is to use a "
                 "production grade managed service such as Aurora",
-                default=f"postgres.{self.settings.get('CN_POSTGRES_NAMESPACE')}.svc.cluster.local",
+                default=f"postgres.{self.settings.get('installer-settings.postgres.namespace')}.svc.cluster.local",
             )
             self.settings.set("config.configmap.cnJackrabbitPostgresHost", url)

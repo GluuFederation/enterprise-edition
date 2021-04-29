@@ -11,6 +11,7 @@ def test_backup_ldap(monkeypatch, settings, given, expected):
     monkeypatch.setattr("click.prompt", lambda x, default: given or expected)
 
     settings.set("global.cnPersistenceType", "ldap")
+    settings.set("installer-settings.ldap.backup.fullSchedule", "")
 
     PromptBackup(settings).prompt_backup()
     assert settings.get("installer-settings.ldap.backup.fullSchedule") == expected
@@ -31,6 +32,7 @@ def test_backup_not_ldap_incr(monkeypatch, settings, given, expected, type_):
     settings.set("installer-settings.couchbase.backup.fullSchedule", "0 2 * * 6")
     settings.set("installer-settings.couchbase.backup.retentionTime", "168h")
     settings.set("installer-settings.couchbase.backup.storageSize", "20Gi")
+    settings.set("installer-settings.couchbase.backup.incrementalSchedule", "")
 
     PromptBackup(settings).prompt_backup()
     assert settings.get("installer-settings.couchbase.backup.incrementalSchedule") == expected
@@ -51,6 +53,7 @@ def test_backup_not_ldap_full(monkeypatch, settings, given, expected, type_):
     settings.set("installer-settings.couchbase.backup.incrementalSchedule", "*/30 * * * *")
     settings.set("installer-settings.couchbase.backup.retentionTime", "168h")
     settings.set("installer-settings.couchbase.backup.storageSize", "20Gi")
+    settings.set("installer-settings.couchbase.backup.incrementalSchedule", "")
 
     PromptBackup(settings).prompt_backup()
     assert settings.get("installer-settings.couchbase.backup.incrementalSchedule") == expected
@@ -71,6 +74,7 @@ def test_backup_not_ldap_retention(monkeypatch, settings, given, expected, type_
     settings.set("installer-settings.couchbase.backup.incrementalSchedule", "*/30 * * * *")
     settings.set("installer-settings.couchbase.backup.fullSchedule", "0 2 * * 6")
     settings.set("installer-settings.couchbase.backup.storageSize", "20Gi")
+    settings.set("installer-settings.couchbase.backup.retentionTime", "")
 
     PromptBackup(settings).prompt_backup()
     assert settings.get("installer-settings.couchbase.backup.retentionTime") == expected
@@ -91,6 +95,7 @@ def test_backup_not_ldap_storage(monkeypatch, settings, given, expected, type_):
     settings.set("installer-settings.couchbase.backup.incrementalSchedule", "*/30 * * * *")
     settings.set("installer-settings.couchbase.backup.fullSchedule", "0 2 * * 6")
     settings.set("installer-settings.couchbase.backup.retentionTime", "168h")
+    settings.set("installer-settings.couchbase.backup.storageSize", "")
 
     PromptBackup(settings).prompt_backup()
     assert settings.get("installer-settings.couchbase.backup.storageSize") == expected

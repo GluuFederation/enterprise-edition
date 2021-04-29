@@ -3,9 +3,10 @@ def test_confirmsettings_confirm_params_accepted(monkeypatch, settings):
 
     monkeypatch.setattr("click.confirm", lambda x: True)
 
+    settings.set("installer-settings.confirmSettings", "")
     prompt = PromptConfirmSettings(settings)
     prompt.confirm_params()
-    assert settings.get("CONFIRM_PARAMS")
+    assert settings.get("installer-settings.confirmSettings") == True
 
 
 def test_confirmsettings_confirm_params_rejected(monkeypatch, settings):
@@ -14,7 +15,7 @@ def test_confirmsettings_confirm_params_rejected(monkeypatch, settings):
     monkeypatch.setattr("click.confirm", lambda x: False)
     # mock Prompt.prompt
     monkeypatch.setattr("pygluu.kubernetes.terminal.prompt.Prompt.prompt", lambda x: None)
-
+    
     prompt = PromptConfirmSettings(settings)
     prompt.confirm_params()
-    assert settings.get("CONFIRM_PARAMS") == "N"
+    assert settings.get("installer-settings.confirmSettings") == False

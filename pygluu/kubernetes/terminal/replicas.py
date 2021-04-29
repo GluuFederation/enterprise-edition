@@ -24,10 +24,10 @@ class PromptReplicas:
             self.settings.set("auth-server.replicas", click.prompt("Number of Auth-Server replicas", default=1))
 
         if self.settings.get("global.fido2.enabled") and self.settings.get("fido2.replicas") in (None, ''):
-            self.settings.set("FIDO2_REPLICAS", click.prompt("Number of fido2 replicas", default=1))
+            self.settings.set("fido2.replicas", click.prompt("Number of fido2 replicas", default=1))
 
-        if self.settings.get("global.scim.enabled") and not self.settings.get("scim.replicas") in (None, ''):
-            self.settings.set("SCIM_REPLICAS", click.prompt("Number of scim replicas", default=1))
+        if self.settings.get("global.scim.enabled") and self.settings.get("scim.replicas") in (None, ''):
+            self.settings.set("scim.replicas", click.prompt("Number of scim replicas", default=1))
 
         if self.settings.get("global.cnPersistenceType") in ("hybrid", "ldap") and \
                 self.settings.get("opendj.replicas") in (None, ''):
@@ -47,5 +47,5 @@ class PromptReplicas:
         if self.settings.get("config.configmap.cnCasaEnabled") and self.settings.get("casa.replicas") in (None, ''):
             self.settings.set("casa.replicas", click.prompt("Number of Casa replicas", default=1))
 
-        if self.settings.get("config.configmap.cnRadiusEnabled") and self.settings.get("radius.replicas"):
+        if self.settings.get("config.configmap.cnRadiusEnabled") and self.settings.get("radius.replicas") in (None, ''):
             self.settings.set("radius.replicas", click.prompt("Number of Radius replicas", default=1))

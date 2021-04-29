@@ -13,7 +13,7 @@ data:
   CN_SECRET_ADAPTER: {{ .Values.configSecretAdapter | quote }}
   CN_LDAP_INIT_HOST: {{ .Values.ldapServiceName }}
   CN_LDAP_INIT: {{ .Values.cnLdapInit | quote }} # TODO: To be removed
-  CN_LDAP_INIT_PORT: {{ .Values.cnLdapInitPort | quote }}
+  CN_LDAP_INIT_PORT: {{ .Values.configmap.cnLdapInitPort | quote }}
   CN_OXTRUST_CONFIG_GENERATION: {{ .Values.cnOxtrustConfigGeneration | quote }}
   CN_CACHE_TYPE: {{ .Values.cnCacheType | quote }}
   {{- if and (.Values.cnRedisEnabled) (eq .Values.cnCacheType "REDIS") }}

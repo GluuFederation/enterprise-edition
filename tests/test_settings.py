@@ -3,12 +3,12 @@ import json
 from pathlib import Path
 
 
-def test_load_invalid_settings(tmpdir, settings):
+def test_load_invalid_values(tmpdir, settings):
     p = Path(tmpdir) / 'test_settings.json'
     settings.values_file = p
     p.write_text('')
     settings.load()
-    assert "Non valid settings.json" in settings.errors[0]
+    assert "Opps!" in settings.errors[0]
 
 
 def test_store_data_exception(caplog, settings):
@@ -22,10 +22,10 @@ def test_store_data_exception(caplog, settings):
 
 def test_set_exception(caplog, settings):
     # set collection to something that cannot be dumped as JSON
-    settings.db = str
+    settings.dot = str
 
     with caplog.at_level(logging.INFO):
-        assert settings.set("CN_VERSION", "5.0") is False
+        assert settings.get("installer-settings.currentVersion", "5.0") is False
         assert "Uncaught error" in caplog.text
 
 
@@ -49,7 +49,7 @@ def test_reset_data_exception(caplog, monkeypatch, settings):
         1 / 0
 
     monkeypatch.setattr(
-        "pygluu.kubernetes.settings.SettingsHandler.store_data",
+        "pygluu.kubernetes.settings.ValuesHandler.store_data",
         fake_store_data,
     )
 
@@ -75,7 +75,9 @@ def test_settings_is_exist(settings, tmpdir):
 
 def test_settings_validation_is_valid(settings, tmpdir):
 
-    settings.set("CN_ACCEPT_LICENSE", "Y")
+    settings.db = str
+    
+    settings.set("installer-settings.acceptLicense", True)
     settings_object = json.dumps(settings.db)
     p = Path(tmpdir) / 'test_settings.json'
     p.write_text(settings_object)
@@ -86,10 +88,11 @@ def test_settings_validation_is_valid(settings, tmpdir):
 
 def test_settings_validation_is_invalid(settings, tmpdir):
 
-    settings.set("CN_ACCEPT_LICENSE", "true")
+    settings.db = str
+    
+    settings.set("installer-settings.acceptLicense", "Y")
     settings.set("CN_ADMIN_PASSWORD", "123123123")
     settings.set("CN_INSTALL_GLUU_GATEWAY", "Y")
-    settings.db.pop("CN_KONG_NAMESPACE")
     settings_object = json.dumps(settings.db)
     p = Path(tmpdir) / 'test_settings.json'
     p.write_text(settings_object)

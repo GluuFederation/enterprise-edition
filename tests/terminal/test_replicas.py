@@ -6,23 +6,9 @@ def test_prompt_replicas_auth_server(monkeypatch, settings):
 
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
-    # bypass
-    settings.set("OXTRUST_REPLICAS", 1)
-
+    settings.set("auth-server.replicas", "")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("AUTH_SERVER_REPLICAS") == 1
-
-
-def test_prompt_replicas_oxtrust(monkeypatch, settings):
-    from pygluu.kubernetes.terminal.replicas import PromptReplicas
-
-    monkeypatch.setattr("click.prompt", lambda x, default: 1)
-
-    # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-
-    PromptReplicas(settings).prompt_replicas()
-    assert settings.get("OXTRUST_REPLICAS") == 1
+    assert settings.get("auth-server.replicas") == 1
 
 
 def test_prompt_replicas_fido2(monkeypatch, settings):
@@ -31,12 +17,11 @@ def test_prompt_replicas_fido2(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("fido2.replicas", "")
 
-    settings.set("ENABLE_FIDO2", "Y")
+    settings.set("global.fido2.enabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("FIDO2_REPLICAS") == 1
+    assert settings.get("fido2.replicas") == 1
 
 
 def test_prompt_replicas_scim(monkeypatch, settings):
@@ -45,12 +30,11 @@ def test_prompt_replicas_scim(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("scim.replicas", "")
 
-    settings.set("ENABLE_SCIM", "Y")
+    settings.set("global.scim.enabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("SCIM_REPLICAS") == 1
+    assert settings.get("scim.replicas") == 1
 
 
 @pytest.mark.parametrize("type_", ["ldap", "hybrid"])
@@ -60,12 +44,11 @@ def test_prompt_replicas_persistence(monkeypatch, settings, type_):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("opendj.replicas", "")
 
-    settings.set("CN_PERSISTENCE_BACKEND", type_)
+    settings.set("global.cnPersistenceType", type_)
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("LDAP_REPLICAS") == 1
+    assert settings.get("opendj.replicas") == 1
 
 
 def test_prompt_replicas_oxshibboleth(monkeypatch, settings):
@@ -74,12 +57,11 @@ def test_prompt_replicas_oxshibboleth(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("oxshibboleth.replicas", "")
 
-    settings.set("ENABLE_OXSHIBBOLETH", "Y")
+    settings.set("global.oxshibboleth.enabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("OXSHIBBOLETH_REPLICAS") == 1
+    assert settings.get("oxshibboleth.replicas") == 1
 
 
 def test_prompt_replicas_oxpassport(monkeypatch, settings):
@@ -88,12 +70,11 @@ def test_prompt_replicas_oxpassport(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("oxpassport.replicas", "")
 
-    settings.set("ENABLE_OXPASSPORT", "Y")
+    settings.set("config.configmap.cnPassportEnabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("OXPASSPORT_REPLICAS") == 1
+    assert settings.get("oxpassport.replicas") == 1
 
 
 def test_prompt_replicas_client_api(monkeypatch, settings):
@@ -102,12 +83,11 @@ def test_prompt_replicas_client_api(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("client-api.replicas", "")
 
-    settings.set("ENABLE_CLIENT_API", "Y")
+    settings.set("global.client-api.enabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("CLIENT_API_REPLICAS") == 1
+    assert settings.get("client-api.replicas") == 1
 
 
 def test_prompt_replicas_casa(monkeypatch, settings):
@@ -116,12 +96,11 @@ def test_prompt_replicas_casa(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("casa.replicas", "")
 
-    settings.set("ENABLE_CASA", "Y")
+    settings.set("config.configmap.cnCasaEnabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("CASA_REPLICAS") == 1
+    assert settings.get("casa.replicas") == 1
 
 
 def test_prompt_replicas_radius(monkeypatch, settings):
@@ -130,9 +109,8 @@ def test_prompt_replicas_radius(monkeypatch, settings):
     monkeypatch.setattr("click.prompt", lambda x, default: 1)
 
     # bypass
-    settings.set("AUTH_SERVER_REPLICAS", 1)
-    settings.set("OXTRUST_REPLICAS", 1)
+    settings.set("radius.replicas", "")
 
-    settings.set("ENABLE_RADIUS", "Y")
+    settings.set("config.configmap.cnRadiusEnabled", "Y")
     PromptReplicas(settings).prompt_replicas()
-    assert settings.get("RADIUS_REPLICAS") == 1
+    assert settings.get("radius.replicas") == 1

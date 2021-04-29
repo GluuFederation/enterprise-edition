@@ -224,7 +224,7 @@ class Gluu(object):
             self.prepare_alb()
             self.deploy_alb()
         if self.settings.get("installer-settings.aws.lbType") != "alb" and \
-                self.settings.get("global.istio.ingress.enabled"):
+                self.settings.get("global.istio.ingress"):
             self.check_install_nginx_ingress(install_ingress)
         try:
             exec_cmd("helm install {} -f {} ./helm/gluu --namespace={}".format(

@@ -142,38 +142,38 @@ class ValuesHandler(object):
         else:
             return True
 
-    def validate(self):
-        self.errors = []
-        try:
-            with open(self.values_file) as f:
-                try:
-                    settings = json.load(f)
-                    validator = jsonschema.Draft7Validator(self.schema)
-                    errors = sorted(validator.iter_errors(settings),
-                                    key=lambda e: e.path)
+    # def validate(self):
+    #     self.errors = []
+    #     try:
+    #         with open(self.values_file) as f:
+    #             try:
+    #                 settings = json.load(f)
+    #                 validator = jsonschema.Draft7Validator(self.schema)
+    #                 errors = sorted(validator.iter_errors(settings),
+    #                                 key=lambda e: e.path)
 
-                    for error in errors:
-                        if "errors" in error.schema and \
-                                error.validator != 'required':
-                            key = error.path[0]
-                            error_msg = error.schema.get('errors').get(
-                                error.validator)
-                            message = f"{key} : {error_msg}"
-                        else:
-                            if error.path:
-                                key = error.path[0]
-                                message = f"{key} : {error.message}"
-                            else:
-                                message = error.message
+    #                 for error in errors:
+    #                     if "errors" in error.schema and \
+    #                             error.validator != 'required':
+    #                         key = error.path[0]
+    #                         error_msg = error.schema.get('errors').get(
+    #                             error.validator)
+    #                         message = f"{key} : {error_msg}"
+    #                     else:
+    #                         if error.path:
+    #                             key = error.path[0]
+    #                             message = f"{key} : {error.message}"
+    #                         else:
+    #                             message = error.message
 
-                        self.errors.append(message)
+    #                     self.errors.append(message)
 
-                except json.decoder.JSONDecodeError as e:
-                    self.errors.append(f"Not a valid values.yaml : {str(e)}")
-                    return False
+    #             except json.decoder.JSONDecodeError as e:
+    #                 self.errors.append(f"Not a valid values.yaml : {str(e)}")
+    #                 return False
 
-        except FileNotFoundError:
-            # skip validating file does not exist
-            return True
+    #     except FileNotFoundError:
+    #         # skip validating file does not exist
+    #         return True
 
-        return len(self.errors) == 0
+    #     return len(self.errors) == 0

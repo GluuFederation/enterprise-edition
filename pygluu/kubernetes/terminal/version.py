@@ -16,7 +16,7 @@ class PromptVersion:
 
     def __init__(self, settings, version=""):
         self.settings = settings
-        if self.settings.get("installer-settings.currentVersion"):
+        if not self.settings.get("installer-settings.currentVersion"):
             self.settings.set("installer-settings.currentVersion", version)
         self.prompt_version()
 

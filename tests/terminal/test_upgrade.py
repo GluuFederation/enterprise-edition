@@ -14,6 +14,7 @@ def test_upgrade_version(monkeypatch, settings, given, expected):
         lambda cls: None,
     )
 
+    settings.set("installer-settings.upgrade.targetVersion", "")
     PromptUpgrade(settings).prompt_upgrade()
-    assert settings.get("CN_UPGRADE_TARGET_VERSION") == expected
-    assert settings.get("EDIT_IMAGE_NAMES_TAGS") == ""
+    assert settings.get("installer-settings.upgrade.targetVersion") == expected
+    assert settings.get("installer-settings.image.edit") == ""
